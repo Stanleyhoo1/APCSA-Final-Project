@@ -31,7 +31,7 @@ Additional Information
 The simulation will scale down the vast distances and sizes in the solar system to fit within a manageable view, ensuring a balance between accuracy and usability.
 
 # UML Diagram
-
+UML Diagram.png
 
 # How Does It Work?
 Running the Simulation
