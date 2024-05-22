@@ -22,13 +22,9 @@ User Controls: Allow users to adjust the simulation speed, change the sizes of p
 
 Time Control: Enables users to speed up or slow down time to observe planetary movements in different time scales.
 
-Libraries Needed
+Libraries Needed: None
 
-None
-
-Additional Information
-
-The simulation will scale down the vast distances and sizes in the solar system to fit within a manageable view, ensuring a balance between accuracy and usability.
+Additional Information: The simulation will scale down the vast distances and sizes in the solar system to fit within a manageable view, ensuring a balance between accuracy and usability.
 
 # UML Diagram
 [UML Diagram.png](https://github.com/Stanleyhoo1/APCSA-Final-Project/blob/5c199c6ecdb1340bbab465b9590181054fd2b06f/UML%20Diagram.png)
