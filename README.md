@@ -2,12 +2,18 @@
 
 # Introduction
 Period: 2
+
 Group Members: Stanley Hoo
+
 Group Name: Solar
+
 Project Title: Space Simulator
 
+
 # Description
-Project Overview: This project will simulate our solar system. The user can make changes to it by changing the mass of planets, changing orbital paths, and the distance between planets. This will help us visualize how impactful some changes in our solar system can be over time. Everytime a change is made, the simulation will be reset with the new changes. 
+
+Project Overview: This project will simulate our solar system. The user can make changes to it by changing the mass of planets, changing orbital paths, and the distance between planets. This will help us visualize how impactful some changes in our solar system can be over time. Everytime a change is made, the simulation will be reset with the new changes.
+
 # Functionalities
 Planetary Orbits: Accurate depiction of planetary orbits around the sun based on gravitational forces.
 Information Panels: Display details about each celestial body, including name, size, distance from the sun, and orbital period.
