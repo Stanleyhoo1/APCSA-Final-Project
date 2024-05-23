@@ -29,4 +29,12 @@ class Planet{
     distanceFromSun = distance;
   }
   
+  void updatePosition(float timeScale){
+    
+  }
+  
+  void draw(){
+    circle(0, 0, size/1000);
+    
+  }
 }
