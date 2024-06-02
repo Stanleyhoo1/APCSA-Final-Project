@@ -47,16 +47,21 @@ Adjusting Planet Properties: Users will be able to change the distance of planet
 # Functionalities / Issues (for Meeting 1 and 2 documents)
 Functionalities: 
 Planets are orbiting
+
 Data for planet is displayed when it is clicked
 
 Issues:
 Scaling is too small
+
 Will probably try to fix by adding a zoom method to zoom into specific areas
 
 Functionalities to add by next meeting:
 A way to change a planet’s mass
+
 A time display at the top
+
 Text showing up on screen instead of console
+
 Way to change the time passage
 
 
