@@ -45,6 +45,20 @@ Increasing Time: Increases the rate at which time is passing, in other words the
 Adjusting Planet Properties: Users will be able to change the distance of planets to each other and the sun by dragging and dropping them. They can also increase the mass of a planet by using an input box or drag bar. Mass will be measured in units of Earths. 
 
 # Functionalities / Issues (for Meeting 1 and 2 documents)
+Functionalities: 
+Planets are orbiting
+Data for planet is displayed when it is clicked
+
+Issues:
+Scaling is too small
+Will probably try to fix by adding a zoom method to zoom into specific areas
+
+Functionalities to add by next meeting:
+A way to change a planet’s mass
+A time display at the top
+Text showing up on screen instead of console
+Way to change the time passage
+
 
 # Log (for the final document)
 Stanley Hoo: Everything
