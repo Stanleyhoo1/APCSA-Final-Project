@@ -22,7 +22,7 @@ class Planet {
   String getInfo() {
     String str = "";
     str += "This planet is " + name + ". ";
-    str += name + " is " + distanceFromSun + " million km away from the sun. ";
+    str += name + " is " + distanceFromSun + " million km away from the sun. \n";
     str += name + " has a diameter of " + size/3 * 10 + " km and a mass of " + mass + " Earths. ";
     str += "It completes one full orbit around the sun in " + orbitalPeriod + " days.";
     return str;

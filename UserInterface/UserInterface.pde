@@ -10,7 +10,7 @@ void setup() {
   venusImage = loadImage("venus.png");
   earthImage = loadImage("earth.png");
   marsImage = loadImage("mars.png");
-  jupiterImage = loadImage("jupiter.avif");
+  jupiterImage = loadImage("jupiter.png");
   saturnImage = loadImage("saturn.png");
   uranusImage = loadImage("uranus.png");
   neptuneImage = loadImage("neptune.png");
