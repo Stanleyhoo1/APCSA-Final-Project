@@ -10,7 +10,7 @@ void setup() {
   venusImage = loadImage("venus.png");
   earthImage = loadImage("earth.png");
   marsImage = loadImage("mars.png");
-  jupiterImage = loadImage("jupiter.png");
+  jupiterImage = loadImage("jupiter.avif");
   saturnImage = loadImage("saturn.png");
   uranusImage = loadImage("uranus.png");
   neptuneImage = loadImage("neptune.png");
@@ -71,8 +71,8 @@ void adjustPlanetDistance(Planet planet, float distance) {
 void mouseClicked() {
   if (wait <= 0){
     for (Planet planet : solar.planets) {
-      if (dist(mouseX, mouseY, cos(planet.angle) * planet.distanceFromSun * 10, sin(planet.angle) * planet.distanceFromSun * 10) < 100) {
-        planet.setDisplay(1000);
+      if (dist(mouseX, mouseY, width / 2 + cos(planet.angle) * planet.distanceFromSun * 10, height / 2 + sin(planet.angle) * planet.distanceFromSun * 10) < planet.size / 1000) {
+        planet.setDisplay(200); // Display text for 200 frames
       }
     }
     wait = 100;
