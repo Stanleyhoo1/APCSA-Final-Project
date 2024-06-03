@@ -31,6 +31,10 @@ class Planet {
   void setMass(float m) {
     this.mass = m;
   }
+  
+  void setSize(float s) {
+    this.size = s*300;
+  }
 
   void setDistanceFromSun(float distance) {
     this.distanceFromSun = distance;
