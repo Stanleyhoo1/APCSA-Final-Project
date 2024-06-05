@@ -3,15 +3,19 @@ float scale = 1.0;
 int wait = 0;
 PImage mercuryImage, venusImage, earthImage, marsImage, jupiterImage, saturnImage, uranusImage, neptuneImage;
 import controlP5.*;
+boolean simulate;
+
 
 ControlP5 cp5;
 Planet selectedPlanet;
 Textfield sizeTextfield;
 Textfield massTextfield;
+Textfield distanceTextfield;
 
 void setup() {
   size(1000, 800);
   cp5 = new ControlP5(this);
+  simulate = false;
 
   solar = new SolarSystem(scale);
   mercuryImage = loadImage("mercury.png");
@@ -81,6 +85,28 @@ void createControls() {
         }
       }
     });
+    
+  cp5.addSlider("Distance")
+    .setPosition(20, 200)
+    .setSize(200, 20)
+    .setRange(1, 5000)
+    .setValue(1)
+    .plugTo(this, "adjustDistance");
+    
+  distanceTextfield = cp5.addTextfield("Input Distance")
+    .setPosition(250, 200)
+    .setSize(50, 20)
+    .setAutoClear(false)
+    .setText("1")
+    .onChange(new CallbackListener() {
+      public void controlEvent(CallbackEvent event) {
+        float value = PApplet.parseFloat(distanceTextfield.getText());
+        if (value >= 1 && value <= 5000) {
+          adjustDistance(value);
+          cp5.getController("Distance").setValue(value);
+        }
+      }
+    });
 }
 
 void adjustSize(float size) {
@@ -97,14 +123,32 @@ void adjustMass(float mass) {
   }
 }
 
+void adjustDistance(float distance) {
+  if (selectedPlanet != null) {
+    selectedPlanet.setDistanceFromSun(distance);
+    distanceTextfield.setText(str(distance));
+  }
+}
+
 
 void draw() {
-  background(0);
-  handleInput();
-  solar.update();
-  solar.draw();
-  drawControls();
-  wait -= 1;
+  if (simulate){
+    background(0);
+    handleInput();
+    solar.update();
+    solar.draw();
+    drawControls();
+    drawButton();
+    wait -= 1;
+  }
+  else{
+    background(0);
+    handleInput();
+    solar.draw();
+    drawControls();
+    drawButton();
+    wait -= 1;
+  }
 }
 
 void handleInput() {
@@ -155,4 +199,66 @@ void mouseClicked() {
     }
     wait = 100;
   }
+  if (mouseHoverStart()){
+    simulate = !simulate;
+  }
+  if (mouseHoverReset()){
+    reset();
+  }
+}
+
+void drawButton() {
+  if (mouseHoverStart()){
+    fill(99, 160, 222);
+  } else{
+    fill(0, 51, 102);
+  }
+  rectMode(CENTER);
+  rect(70, 250, 100, 25);
+  fill(255, 255, 255);
+  textSize(13);
+  if (simulate == true){
+    textAlign(CENTER);
+    text("Pause simulation", 70, 250);
+    textAlign(BASELINE);
+  } else{
+    textAlign(CENTER);
+    text("Start simulation", 70, 250);
+    textAlign(BASELINE);
+  }
+  if (mouseHoverReset()){
+    fill(99, 160, 222);
+  } else{
+    fill(0, 51, 102);
+  }
+  rect(160, 250, 50, 25);
+  fill(255, 255, 255);
+  textSize(13);
+  textAlign(CENTER);
+  text("Reset", 160, 250);
+  textAlign(BASELINE);
+}
+
+boolean mouseHoverStart(){
+  if ((mouseX >= 20 && mouseX <= 120) && (mouseY >= 237.5 && mouseY <= 262.5)){
+    return true;
+  } else {
+    return false;
+  }
+}
+
+boolean mouseHoverReset(){
+  if ((mouseX >= 135 && mouseX <= 185) && (mouseY >= 237.5 && mouseY <= 262.5)){
+    return true;
+  } else {
+    return false;
+  }
+}
+
+void reset() {
+  setup();
+}
+
+float calcOrbitalPeriod(float distance){
+  return 365 * sqrt(pow(distance/149.6, 3));
 }

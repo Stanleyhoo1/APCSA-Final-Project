@@ -30,14 +30,17 @@ class Planet {
 
   void setMass(float m) {
     this.mass = m;
+    //reset();
   }
   
   void setSize(float s) {
     this.size = s*300;
+    //reset();
   }
 
   void setDistanceFromSun(float distance) {
-    this.distanceFromSun = distance;
+    this.distanceFromSun = distance/100;
+    //reset();
   }
 
   void updatePosition(float timeScale) {
