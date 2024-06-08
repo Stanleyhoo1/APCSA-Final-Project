@@ -53,6 +53,6 @@ class SolarSystem {
       displayingPlanet.setDisplay(0);
     }
     displayingPlanet = planet;
-    displayingPlanet.setDisplay(200); // Display text for 200 frames
+    displayingPlanet.setDisplay(500); // Display text for 200 frames
   }
 }
