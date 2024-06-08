@@ -12,7 +12,7 @@ class Planet {
   Planet(String name, float size, float distanceFromSun, float mass, float orbitalPeriod, PImage img) {
     this.name = name;
     this.size = size*300;
-    this.distanceFromSun = distanceFromSun/100;
+    this.distanceFromSun = distanceFromSun/10;
     this.mass = mass;
     this.orbitalPeriod = orbitalPeriod;
     this.angle = 0; // Initial angle for the planet's position in its orbit
@@ -22,7 +22,7 @@ class Planet {
   String getInfo() {
     String str = "";
     str += "This planet is " + name + ". ";
-    str += name + " is " + distanceFromSun + " million km away from the sun. \n";
+    str += name + " is " + distanceFromSun * 10 + " million km away from the sun. \n";
     str += name + " has a diameter of " + size/3 * 10 + " km and a mass of " + mass + " Earths. ";
     str += "It completes one full orbit around the sun in " + orbitalPeriod + " days.";
     return str;
@@ -30,17 +30,24 @@ class Planet {
 
   void setMass(float m) {
     this.mass = m;
-    //reset();
+    if (simulate == true){
+      modifyPlanets();
+    }
   }
   
   void setSize(float s) {
     this.size = s*300;
-    //reset();
+    if (simulate == true){
+      modifyPlanets();
+    }
   }
 
   void setDistanceFromSun(float distance) {
-    this.distanceFromSun = distance/100;
-    //reset();
+    this.distanceFromSun = distance/10;
+    this.orbitalPeriod = calcOrbitalPeriod(distance);
+    if (simulate == true){
+      modifyPlanets();
+    }
   }
 
   void updatePosition(float timeScale) {
@@ -57,20 +64,24 @@ class Planet {
   int getDisplay(){
     return this.displayTime;
   }
+  
+  String getNames(){
+    return this.name;
+  }
 
   void draw() {
     // Calculate the position of the planet in its orbit
-    float x = cos(angle) * distanceFromSun * 10;  // Scale distance for better visibility
-    float y = sin(angle) * distanceFromSun * 10;
+    float x = cos(angle) * 25 * sqrt(distanceFromSun);  // Scale distance for better visibility
+    float y = sin(angle) * 25 * sqrt(distanceFromSun);
     // Draw the orbital path
     noFill();
     stroke(100);
-    ellipse(width / 2, height / 2, distanceFromSun * 20, distanceFromSun * 20);
+    ellipse(width / 2, height / 2, 50 * sqrt(distanceFromSun), 50 * sqrt(distanceFromSun));
     // Draw the planet at its current position
     pushMatrix();
     translate(width / 2, height / 2);
     imageMode(CENTER);
-    image(img, x, y, size / 1000, size / 1000); // Scale down the size for drawing
+    image(img, x, y, sqrt(size)/4, sqrt(size)/4); // Scale down the size for drawing
     if (this.getDisplay() > 0){
       fill(255);
       textSize(14);

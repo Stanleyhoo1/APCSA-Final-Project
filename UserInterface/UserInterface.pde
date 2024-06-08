@@ -4,7 +4,8 @@ int wait = 0;
 PImage mercuryImage, venusImage, earthImage, marsImage, jupiterImage, saturnImage, uranusImage, neptuneImage;
 import controlP5.*;
 boolean simulate;
-
+boolean initial = false;
+HashMap<String, PlanetProperties> planetProperties;
 
 ControlP5 cp5;
 Planet selectedPlanet;
@@ -13,10 +14,12 @@ Textfield massTextfield;
 Textfield distanceTextfield;
 
 void setup() {
-  size(1000, 800);
+  size(1200, 1200);
   cp5 = new ControlP5(this);
   simulate = false;
 
+  initializePlanetProperties();
+  
   solar = new SolarSystem(scale);
   mercuryImage = loadImage("mercury.png");
   venusImage = loadImage("venus.png");
@@ -27,15 +30,16 @@ void setup() {
   uranusImage = loadImage("uranus.png");
   neptuneImage = loadImage("neptune.png");
   
-  solar.addPlanet(new Planet("Mercury", 4.879, 57.9, 0.055, 88, mercuryImage));   // Mercury
-  solar.addPlanet(new Planet("Venus", 12.104, 108.2, 0.815, 225, venusImage));  // Venus
-  solar.addPlanet(new Planet("Earth", 12.742, 149.6, 1, 365, earthImage));      // Earth
-  solar.addPlanet(new Planet("Mars", 6.779, 227.9, 0.107, 687, marsImage));    // Mars
-  solar.addPlanet(new Planet("Jupiter", 139.820, 778.5, 317.8, 4333, jupiterImage)); // Jupiter
-  solar.addPlanet(new Planet("Saturn", 116.460, 1434, 95.2, 10759, saturnImage)); // Saturn
-  solar.addPlanet(new Planet("Uranus", 50.724, 2871, 14.5, 30687, uranusImage));  // Uranus
-  solar.addPlanet(new Planet("Neptune", 49.244, 4495, 17.1, 60190, neptuneImage)); // Neptune
-
+  solar.addPlanet(new Planet("Mercury", planetProperties.get("Mercury").getProperty("Size"), planetProperties.get("Mercury").getProperty("Distance"), planetProperties.get("Mercury").getProperty("Mass"), calcOrbitalPeriod(planetProperties.get("Mercury").getProperty("Distance")), mercuryImage));   // Mercury
+  solar.addPlanet(new Planet("Venus", planetProperties.get("Venus").getProperty("Size"), planetProperties.get("Venus").getProperty("Distance"), planetProperties.get("Venus").getProperty("Mass"), calcOrbitalPeriod(planetProperties.get("Venus").getProperty("Distance")), venusImage));  // Venus
+  solar.addPlanet(new Planet("Earth", planetProperties.get("Earth").getProperty("Size"), planetProperties.get("Earth").getProperty("Distance"), planetProperties.get("Earth").getProperty("Mass"), calcOrbitalPeriod(planetProperties.get("Earth").getProperty("Distance")), earthImage));      // Earth
+  solar.addPlanet(new Planet("Mars", planetProperties.get("Mars").getProperty("Size"), planetProperties.get("Mars").getProperty("Distance"), planetProperties.get("Mars").getProperty("Mass"), calcOrbitalPeriod(planetProperties.get("Mars").getProperty("Distance")), marsImage));    // Mars
+  solar.addPlanet(new Planet("Jupiter", planetProperties.get("Jupiter").getProperty("Size"), planetProperties.get("Jupiter").getProperty("Distance"), planetProperties.get("Jupiter").getProperty("Mass"), calcOrbitalPeriod(planetProperties.get("Jupiter").getProperty("Distance")), jupiterImage)); // Jupiter
+  solar.addPlanet(new Planet("Saturn", planetProperties.get("Saturn").getProperty("Size"), planetProperties.get("Saturn").getProperty("Distance"), planetProperties.get("Saturn").getProperty("Mass"), calcOrbitalPeriod(planetProperties.get("Saturn").getProperty("Distance")), saturnImage)); // Saturn
+  solar.addPlanet(new Planet("Uranus", planetProperties.get("Uranus").getProperty("Size"), planetProperties.get("Uranus").getProperty("Distance"), planetProperties.get("Uranus").getProperty("Mass"), calcOrbitalPeriod(planetProperties.get("Uranus").getProperty("Distance")), uranusImage));  // Uranus
+  solar.addPlanet(new Planet("Neptune", planetProperties.get("Neptune").getProperty("Size"), planetProperties.get("Neptune").getProperty("Distance"), planetProperties.get("Neptune").getProperty("Mass"), calcOrbitalPeriod(planetProperties.get("Neptune").getProperty("Distance")), neptuneImage)); // Neptune
+  initial = true;
+  
   createControls();
 }
 
@@ -85,14 +89,15 @@ void createControls() {
         }
       }
     });
-    
+
+  // Distance Slider and Textfield
   cp5.addSlider("Distance")
     .setPosition(20, 200)
     .setSize(200, 20)
     .setRange(1, 5000)
     .setValue(1)
     .plugTo(this, "adjustDistance");
-    
+
   distanceTextfield = cp5.addTextfield("Input Distance")
     .setPosition(250, 200)
     .setSize(50, 20)
@@ -111,25 +116,39 @@ void createControls() {
 
 void adjustSize(float size) {
   if (selectedPlanet != null) {
-    selectedPlanet.setSize(size);
+    planetProperties.get(selectedPlanet.name).setProperty("Size", size);
     sizeTextfield.setText(str(size));
+    selectedPlanet.setSize(size);
   }
 }
 
 void adjustMass(float mass) {
   if (selectedPlanet != null) {
-    selectedPlanet.setMass(mass);
+    planetProperties.get(selectedPlanet.name).setProperty("Mass", mass);
     massTextfield.setText(str(mass));
+    selectedPlanet.setMass(mass);
   }
 }
 
 void adjustDistance(float distance) {
   if (selectedPlanet != null) {
-    selectedPlanet.setDistanceFromSun(distance);
+    planetProperties.get(selectedPlanet.name).setProperty("Distance", distance);
     distanceTextfield.setText(str(distance));
+    selectedPlanet.setDistanceFromSun(distance);
   }
 }
 
+void initializePlanetProperties() {
+  planetProperties = new HashMap<String, PlanetProperties>();
+  planetProperties.put("Mercury", new PlanetProperties(4.879, 0.055, 57.9));
+  planetProperties.put("Venus", new PlanetProperties(12.104, 0.815, 108.2));
+  planetProperties.put("Earth", new PlanetProperties(12.742, 1, 149.6));
+  planetProperties.put("Mars", new PlanetProperties(6.779, 0.107, 227.9));
+  planetProperties.put("Jupiter", new PlanetProperties(139.82, 317.8, 778.5));
+  planetProperties.put("Saturn", new PlanetProperties(116.46, 95.2, 1434));
+  planetProperties.put("Uranus", new PlanetProperties(50.724, 14.5, 2871));
+  planetProperties.put("Neptune", new PlanetProperties(49.244, 17.1, 4495));
+}
 
 void draw() {
   if (simulate){
@@ -189,8 +208,8 @@ void adjustPlanetDistance(Planet planet, float distance) {
 void mouseClicked() {
   if (wait <= 0) {
     for (Planet planet : solar.planets) {
-      float x = width / 2 + cos(planet.angle) * planet.distanceFromSun * 10;
-      float y = height / 2 + sin(planet.angle) * planet.distanceFromSun * 10;
+      float x = width / 2 + cos(planet.angle) * 25 * sqrt(planet.distanceFromSun);
+      float y = height / 2 + sin(planet.angle) * 25 * sqrt(planet.distanceFromSun);
       if (dist(mouseX, mouseY, x, y) < planet.size / 1000) {
         solar.setDisplayingPlanet(planet);
         selectedPlanet = planet;
@@ -256,7 +275,15 @@ boolean mouseHoverReset(){
 }
 
 void reset() {
+  initializePlanetProperties();
   setup();
+}
+
+void modifyPlanets(){
+  for (Planet planet : solar.planets) {
+    planet.angle = 0;
+  }
+  simulate = false;
 }
 
 float calcOrbitalPeriod(float distance){
