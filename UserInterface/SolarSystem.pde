@@ -64,7 +64,6 @@ class SolarSystem {
       }
       PVector force = calculateCentripetal(planet);
       totalForce.add(force);
-      println(totalForce);
       planet.applyForce(totalForce);
     }
     // Update planet positions
@@ -82,14 +81,13 @@ class SolarSystem {
     float scale = pow(10, 10);
     strength *= scale;
     force.setMag(strength);
-    println("grav force", force);
     return force;
   }
   
   PVector calculateCentripetal(Planet planet){
     float forceMag = planet.mass * pow(planet.velocity.mag(), 2) / planet.position.mag();
     PVector force = new PVector(cos(planet.angle) * forceMag, sin(planet.angle) * forceMag);
-    println("force", force);
+    force.mult(pow(10, 3));
     return force;
   }
 }
