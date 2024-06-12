@@ -8,6 +8,9 @@ class Planet {
   PImage img;
   boolean displayText = false;
   int displayTime = 0;
+  PVector position;
+  PVector velocity;
+  PVector acceleration;
 
   Planet(String name, float size, float distanceFromSun, float mass, float orbitalPeriod, PImage img) {
     this.name = name;
@@ -17,8 +20,23 @@ class Planet {
     this.orbitalPeriod = orbitalPeriod;
     this.angle = 0; // Initial angle for the planet's position in its orbit
     this.img = img;
+    float x = cos(angle) * sqrt(this.distanceFromSun) * 25;
+    float y = sin(angle) * sqrt(this.distanceFromSun) * 25;
+    this.position = new PVector(x, y);
+    this.velocity = calculateInitialVelocity();
+    println("velocity", velocity);
+    this.acceleration = new PVector(0, 0);
   }
 
+  PVector calculateInitialVelocity() {
+    float G = 6.67430e-11f; // Gravitational constant
+    float M = 1.989e30f; // Mass of the Sun in kg
+    float r = this.distanceFromSun * 1e9f; // Convert to meters
+    float v = sqrt(G * M / r);
+    PVector velocity = new PVector(-sin(angle) * v, cos(angle) * v); // Perpendicular to the position vector
+    return velocity.div(1e9f); // Convert to a smaller scale for the simulation
+  }
+  
   String getInfo() {
     String str = "";
     str += "This planet is " + name + ". ";
@@ -48,11 +66,14 @@ class Planet {
     if (simulate == true){
       modifyPlanets();
     }
+    float x = cos(angle) * sqrt(this.distanceFromSun) * 25;
+    float y = sin(angle) * sqrt(this.distanceFromSun) * 25;
+    this.position = new PVector(x, y);
   }
 
   void updatePosition(float timeScale) {
     // Update the angle of the planet in its orbit based on the time scale and orbital period
-    angle += (TWO_PI / orbitalPeriod) * timeScale;
+    angle -= (TWO_PI / orbitalPeriod) * timeScale;
     // Keep the angle within the range of 0 to TWO_PI
     angle = angle % TWO_PI;
   }
@@ -64,15 +85,29 @@ class Planet {
   int getDisplay(){
     return this.displayTime;
   }
-  
-  String getNames(){
-    return this.name;
+
+  void applyForce(PVector force) {
+    PVector f = PVector.div(force, mass);
+    acceleration.add(f);
   }
 
+  void update() {
+    velocity.add(acceleration);
+    println("v", velocity);
+    float mag = velocity.mag();
+    velocity.x = mag * sin(angle);
+    velocity.y = mag * cos(angle);
+    position.add(velocity);
+    acceleration.mult(0);
+  }
+  
   void draw() {
     // Calculate the position of the planet in its orbit
-    float x = cos(angle) * 25 * sqrt(distanceFromSun);  // Scale distance for better visibility
-    float y = sin(angle) * 25 * sqrt(distanceFromSun);
+    println("position", position);
+    float x = position.mag() * cos(angle);
+    float y = position.mag() * sin(angle);
+    println(position);
+    println(angle);
     // Draw the orbital path
     noFill();
     stroke(100);

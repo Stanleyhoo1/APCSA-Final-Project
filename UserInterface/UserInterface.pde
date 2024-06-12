@@ -186,6 +186,8 @@ void keyReleased(){
   } else if (key == '-'){
     scale /= 2;
     solar.adjustTimeScale(scale);
+  } else if (key == ' '){
+    simulate = !simulate;
   }
 }
 
