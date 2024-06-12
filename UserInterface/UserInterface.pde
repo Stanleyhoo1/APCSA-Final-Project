@@ -5,7 +5,9 @@ PImage mercuryImage, venusImage, earthImage, marsImage, jupiterImage, saturnImag
 import controlP5.*;
 boolean simulate;
 boolean initial = false;
+boolean changed = false;
 HashMap<String, PlanetProperties> planetProperties;
+float total = 0;
 
 ControlP5 cp5;
 Planet selectedPlanet;
@@ -159,6 +161,7 @@ void draw() {
     drawControls();
     drawButton();
     wait -= 1;
+    changed = false;
   }
   else{
     background(0);
@@ -197,6 +200,8 @@ void drawControls() {
   text("Press '+' to speed up time", 20, 30);
   text("Press '-' to slow down time", 20, 50);
   text("Current time speed: " + scale + " days per frame", 20 , 70);
+  total += scale;
+  text("Time elapsed: " + total/365 + " years", 20, 90);
 }
 
 void adjustPlanetMass(Planet planet, float mass) {

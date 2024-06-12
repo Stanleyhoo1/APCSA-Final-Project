@@ -24,7 +24,6 @@ class Planet {
     float y = sin(angle) * sqrt(this.distanceFromSun) * 25;
     this.position = new PVector(x, y);
     this.velocity = calculateInitialVelocity();
-    println("velocity", velocity);
     this.acceleration = new PVector(0, 0);
   }
 
@@ -48,23 +47,26 @@ class Planet {
 
   void setMass(float m) {
     this.mass = m;
-    if (simulate == true){
+    if (simulate == true || changed == false){
       modifyPlanets();
+      changed = true;
     }
   }
   
   void setSize(float s) {
     this.size = s*300;
-    if (simulate == true){
+    if (simulate == true || changed == false){
       modifyPlanets();
+      changed = true;
     }
   }
 
   void setDistanceFromSun(float distance) {
     this.distanceFromSun = distance/10;
     this.orbitalPeriod = calcOrbitalPeriod(distance);
-    if (simulate == true){
+    if (simulate == true || changed == false){
       modifyPlanets();
+      changed = true;
     }
     float x = cos(angle) * sqrt(this.distanceFromSun) * 25;
     float y = sin(angle) * sqrt(this.distanceFromSun) * 25;
@@ -72,7 +74,7 @@ class Planet {
   }
 
   void updatePosition(float timeScale) {
-    // Update the angle of the planet in its orbit based on the time scale and orbital period
+    // Update the angle of the planet in its orbit based on the time scale and orbital period, planets orbit counterclockwise
     angle -= (TWO_PI / orbitalPeriod) * timeScale;
     // Keep the angle within the range of 0 to TWO_PI
     angle = angle % TWO_PI;
@@ -92,22 +94,20 @@ class Planet {
   }
 
   void update() {
+    velocity = new PVector(0, 0);
     velocity.add(acceleration);
-    println("v", velocity);
     float mag = velocity.mag();
     velocity.x = mag * sin(angle);
     velocity.y = mag * cos(angle);
+    velocity.limit(100);
     position.add(velocity);
     acceleration.mult(0);
   }
   
   void draw() {
     // Calculate the position of the planet in its orbit
-    println("position", position);
     float x = position.mag() * cos(angle);
     float y = position.mag() * sin(angle);
-    println(position);
-    println(angle);
     // Draw the orbital path
     noFill();
     stroke(100);
