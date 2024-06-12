@@ -3,6 +3,8 @@ class SolarSystem {
   float timeScale;
   Planet displayingPlanet = null;
   PImage sunImage;
+  float sunSize = 696.265;
+  float sunMass = 333000;
   
   SolarSystem(float scale) {
     this.timeScale = scale;
@@ -17,16 +19,10 @@ class SolarSystem {
     planets.remove(p);
   }
   
-  void update() {
-    for (Planet planet : planets) {
-      planet.updatePosition(timeScale);
-    }
-  }
-  
   void draw() {
     // Draw the sun at the center
     imageMode(CENTER);
-    image(sunImage, width / 2, height / 2, 50, 50); // Adjusted sun size
+    image(sunImage, width / 2, height / 2, sqrt(sunSize*300)/4, sqrt(sunSize*300)/4); // Adjusted sun size
 
     for (Planet planet : planets) {
       planet.draw();
@@ -54,5 +50,46 @@ class SolarSystem {
     }
     displayingPlanet = planet;
     displayingPlanet.setDisplay(500); // Display text for 200 frames
+  }
+  
+  void update() {
+    // Calculate and apply gravitational forces
+    for (Planet planet : planets) {
+      PVector totalForce = new PVector(0, 0);
+      for (Planet other : planets) {
+        if (planet != other) {
+          PVector force = calculateGravitationalForce(planet, other);
+          totalForce.add(force);
+        }
+      }
+      PVector force = calculateCentripetal(planet);
+      totalForce.add(force);
+      println(totalForce);
+      planet.applyForce(totalForce);
+    }
+    // Update planet positions
+    for (Planet planet : planets) {
+      planet.update();
+      planet.updatePosition(timeScale);
+    }
+  }
+
+  PVector calculateGravitationalForce(Planet a, Planet b) {
+    float G = 6.67430e-11f; // Gravitational constant
+    PVector force = PVector.sub(b.position, a.position);
+    float distance = force.mag();
+    float strength = (G * a.mass * b.mass) / (distance * distance);
+    force.setMag(strength);
+    //force.x = cos(a.angle) * force.mag();
+    //force.y = sin(a.angle) * force.mag() * pow(10, 10);
+    println("grav force", force);
+    return force;
+  }
+  
+  PVector calculateCentripetal(Planet planet){
+    float forceMag = planet.mass * pow(planet.velocity.mag(), 2) / planet.distanceFromSun;
+    PVector force = new PVector(cos(planet.angle) * forceMag, sin(planet.angle) * forceMag);
+    println("force", force);
+    return force;
   }
 }
