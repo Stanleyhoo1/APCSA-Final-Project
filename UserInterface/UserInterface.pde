@@ -200,7 +200,9 @@ void drawControls() {
   text("Press '+' to speed up time", 20, 30);
   text("Press '-' to slow down time", 20, 50);
   text("Current time speed: " + scale + " days per frame", 20 , 70);
-  total += scale;
+  if (simulate){
+    total += scale;
+  }
   text("Time elapsed: " + total/365 + " years", 20, 90);
 }
 
@@ -283,6 +285,7 @@ boolean mouseHoverReset(){
 
 void reset() {
   initializePlanetProperties();
+  total = 0;
   setup();
 }
 
@@ -291,6 +294,7 @@ void modifyPlanets(){
     planet.angle = 0;
   }
   simulate = false;
+  total = 0;
 }
 
 float calcOrbitalPeriod(float distance){
