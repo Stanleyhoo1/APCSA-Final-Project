@@ -196,7 +196,7 @@ void drawControls() {
   textSize(16);
   text("Press '+' to speed up time", 20, 30);
   text("Press '-' to slow down time", 20, 50);
-  text("Current time speed: " + scale + " days per second", 20 , 70);
+  text("Current time speed: " + scale + " days per frame", 20 , 70);
 }
 
 void adjustPlanetMass(Planet planet, float mass) {
