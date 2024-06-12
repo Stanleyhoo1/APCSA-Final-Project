@@ -79,15 +79,15 @@ class SolarSystem {
     PVector force = PVector.sub(b.position, a.position);
     float distance = force.mag();
     float strength = (G * a.mass * b.mass) / (distance * distance);
+    float scale = pow(10, 10);
+    strength *= scale;
     force.setMag(strength);
-    //force.x = cos(a.angle) * force.mag();
-    //force.y = sin(a.angle) * force.mag() * pow(10, 10);
     println("grav force", force);
     return force;
   }
   
   PVector calculateCentripetal(Planet planet){
-    float forceMag = planet.mass * pow(planet.velocity.mag(), 2) / planet.distanceFromSun;
+    float forceMag = planet.mass * pow(planet.velocity.mag(), 2) / planet.position.mag();
     PVector force = new PVector(cos(planet.angle) * forceMag, sin(planet.angle) * forceMag);
     println("force", force);
     return force;

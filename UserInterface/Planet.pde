@@ -11,8 +11,6 @@ class Planet {
   PVector position;
   PVector velocity;
   PVector acceleration;
-  static final float G = 6.67430e-11f; // Gravitational constant
-  static final float SUN_MASS = 1.989e30f; // Approximate mass of the Sun in kg
 
   Planet(String name, float size, float distanceFromSun, float mass, float orbitalPeriod, PImage img) {
     this.name = name;
@@ -25,16 +23,18 @@ class Planet {
     float x = cos(angle) * sqrt(this.distanceFromSun) * 25;
     float y = sin(angle) * sqrt(this.distanceFromSun) * 25;
     this.position = new PVector(x, y);
-    this.velocity = calculateInitialVelocity().mult(10000);
+    this.velocity = calculateInitialVelocity();
     println("velocity", velocity);
     this.acceleration = new PVector(0, 0);
   }
 
   PVector calculateInitialVelocity() {
-    float orbitalVelocity = sqrt((G * SUN_MASS) / (distanceFromSun * 1e9f)); // distance in meters
-    float vx = -sin(angle) * orbitalVelocity/pow(10, 9); // Perpendicular to the position vector
-    float vy = cos(angle) * orbitalVelocity/pow(10, 9);
-    return new PVector(vx, vy);
+    float G = 6.67430e-11f; // Gravitational constant
+    float M = 1.989e30f; // Mass of the Sun in kg
+    float r = this.distanceFromSun * 1e9f; // Convert to meters
+    float v = sqrt(G * M / r);
+    PVector velocity = new PVector(-sin(angle) * v, cos(angle) * v); // Perpendicular to the position vector
+    return velocity.div(1e9f); // Convert to a smaller scale for the simulation
   }
   
   String getInfo() {
@@ -104,7 +104,7 @@ class Planet {
   void draw() {
     // Calculate the position of the planet in its orbit
     println("position", position);
-    float x = position.mag() * cos(angle);  // Scale distance for better visibility
+    float x = position.mag() * cos(angle);
     float y = position.mag() * sin(angle);
     println(position);
     println(angle);
