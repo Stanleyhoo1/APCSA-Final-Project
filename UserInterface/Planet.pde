@@ -119,10 +119,6 @@ class Planet {
     image(img, x, y, sqrt(size)/4, sqrt(size)/4); // Scale down the size for drawing
     if (this.getDisplay() > 0){
       fill(255);
-      textSize(14);
-      textAlign(CENTER);
-      text(this.getInfo(), 0, 300);
-      textAlign(BASELINE);
       this.setDisplay(this.getDisplay() - 1);
     }
     popMatrix();
